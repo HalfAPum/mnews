@@ -1,0 +1,1 @@
+ALTER TABLE News RENAME COLUMN date TO creation_date;

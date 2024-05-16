@@ -2,8 +2,9 @@ package com.narvatov.mnews.service;
 
 import com.narvatov.mnews.dao.NewsDao;
 import com.narvatov.mnews.model.News;
+import com.narvatov.mnews.model.dto.response.SimpleNewsDTO;
+import com.narvatov.mnews.utils.ServerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,43 +15,37 @@ public class NewsService {
     @Autowired
     public NewsDao dao;
 
-    //return news without comments
-    public List<News> getAll() {
-        return dao.findAll(getSortDESCByDate());
+    public List<SimpleNewsDTO> getAll() {
+        return dao.findAllNoCommentsSortedByDate();
     }
 
     public List<News> getByCategory(String category) {
-        return dao.findByCategory(category, getSortDESCByDate());
+        return dao.findByCategory(category);
     }
 
-    private Sort getSortDESCByDate() {
-        return Sort.by(new Sort.Order(Sort.Direction.DESC, "date"));
-    }
-
-    //return news with comments
     public News get(int id) {
         return dao.findById(id).orElse(null);
     }
 
 
     public String add(News news) {
-        News createdNews = dao.save(news);
+        dao.save(news);
 
-        return "News " + createdNews.id + " has been successfully created.";
+        return ServerResponse.getCreatedMessage(news);
     }
 
 
     public String update(News news) {
-        News updatedNews = dao.save(news);
+        dao.save(news);
 
-        return "News " + updatedNews.id + " has been successfully updated.";
+        return ServerResponse.getUpdatedMessage(news);
     }
 
 
     public String delete(int id) {
         dao.deleteById(id);
 
-        return "News " + id + " has been successfully deleted.";
+        return ServerResponse.getDeletedMessage(id);
     }
 
 }

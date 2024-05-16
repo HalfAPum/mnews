@@ -1,6 +1,7 @@
 package com.narvatov.mnews.controller;
 
 import com.narvatov.mnews.model.News;
+import com.narvatov.mnews.model.dto.response.SimpleNewsDTO;
 import com.narvatov.mnews.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class NewsController {
 
     //Provide paging
     @GetMapping("getAll")
-    public List<News> getAll() {
+    public List<SimpleNewsDTO> getAll() {
         return service.getAll();
     }
 
