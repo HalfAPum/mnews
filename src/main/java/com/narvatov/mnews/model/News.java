@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class News {
     //consider multiple authors
     public String author;
     @JsonProperty("creation_date")
-    public Date creationDate;
+    public LocalDateTime creationDate;
     //define enum of categories
     public String category;
     @JsonManagedReference

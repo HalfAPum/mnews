@@ -5,6 +5,7 @@ import com.narvatov.mnews.model.dto.request.CommentRequest;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ public class Comment {
     @GeneratedValue
     private int id;
     private String text;
-    private Date creationDate;
+    private LocalDateTime creationDate;
     @JsonBackReference
     @ManyToOne
     private News news;
@@ -25,7 +26,8 @@ public class Comment {
     public Comment(CommentRequest commentRequest) {
         id = commentRequest.getId();
         text = commentRequest.getText();
-        creationDate = new Date();
+        //TODO add update date and don't change creationDate on update
+        creationDate = LocalDateTime.now();
         news = new News();
         news.setId(commentRequest.getNewsId());
     }

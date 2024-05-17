@@ -1,0 +1,1 @@
+CREATE INDEX category_index ON News (category);
