@@ -1,4 +1,4 @@
-package com.narvatov.mnews.model.dto.response
+package com.narvatov.mnews.dto.response
 
 import java.util.*
 

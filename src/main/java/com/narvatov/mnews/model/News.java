@@ -14,7 +14,7 @@ import java.util.List;
 public class News {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue
     public int id;
     public String headline;
     @Column(columnDefinition="TEXT")

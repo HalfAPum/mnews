@@ -2,7 +2,7 @@ package com.narvatov.mnews.service;
 
 import com.narvatov.mnews.dao.CommentsDao;
 import com.narvatov.mnews.model.Comment;
-import com.narvatov.mnews.model.dto.request.CommentRequest;
+import com.narvatov.mnews.dto.request.CommentRequest;
 import com.narvatov.mnews.utils.ServerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

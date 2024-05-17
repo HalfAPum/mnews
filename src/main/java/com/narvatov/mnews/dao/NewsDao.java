@@ -1,7 +1,7 @@
 package com.narvatov.mnews.dao;
 
 import com.narvatov.mnews.model.News;
-import com.narvatov.mnews.model.dto.response.SimpleNewsDTO;
+import com.narvatov.mnews.dto.response.SimpleNewsDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

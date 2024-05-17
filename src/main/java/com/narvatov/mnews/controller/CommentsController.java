@@ -1,7 +1,6 @@
 package com.narvatov.mnews.controller;
 
-import com.narvatov.mnews.model.Comment;
-import com.narvatov.mnews.model.dto.request.CommentRequest;
+import com.narvatov.mnews.dto.request.CommentRequest;
 import com.narvatov.mnews.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
