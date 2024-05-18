@@ -15,14 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class SeedDataConfig implements CommandLineRunner {
 
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserService userService;
+    private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @Override
     public void run(String... args) {

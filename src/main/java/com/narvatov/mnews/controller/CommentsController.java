@@ -2,15 +2,16 @@ package com.narvatov.mnews.controller;
 
 import com.narvatov.mnews.dto.request.CommentRequest;
 import com.narvatov.mnews.service.CommentsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("comments")
 public class CommentsController {
 
-    @Autowired
-    private CommentsService service;
+    private final CommentsService service;
 
     @PostMapping("add")
     public String add(@RequestBody CommentRequest commentRequest) {
