@@ -1,7 +1,8 @@
 package com.narvatov.mnews.dto.response.news;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.narvatov.mnews.model.Comment;
+import com.narvatov.mnews.dto.response.comment.CommentDTO;
+import com.narvatov.mnews.mapper.MapperKt;
 import com.narvatov.mnews.model.News;
 import lombok.Data;
 
@@ -18,7 +19,7 @@ public class DetailedNewsDTO {
     @JsonProperty("creation_date")
     private LocalDateTime creationDate;
     private String category;
-    private List<Comment> comments;
+    private List<CommentDTO> comments;
 
     public DetailedNewsDTO(News news) {
         id = news.getId();
@@ -27,7 +28,7 @@ public class DetailedNewsDTO {
         author = new SimpleUserDTO(news.getAuthor());
         creationDate = news.getCreationDate();
         category = news.getCategory();
-        comments = news.getComments();
+        comments = MapperKt.mapToCommentDTO(news.getComments());
     }
 
 }

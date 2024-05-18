@@ -2,11 +2,13 @@ package com.narvatov.mnews.dto.response.news;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.narvatov.mnews.model.News;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 public class SimpleNewsDTO {
 
     private int id;
