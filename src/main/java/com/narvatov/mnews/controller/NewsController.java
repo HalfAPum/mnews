@@ -1,20 +1,22 @@
 package com.narvatov.mnews.controller;
 
-import com.narvatov.mnews.dto.response.SimpleNewsDTO;
-import com.narvatov.mnews.model.News;
+import com.narvatov.mnews.dto.request.news.CreateNews;
+import com.narvatov.mnews.dto.response.news.DetailedNewsDTO;
+import com.narvatov.mnews.dto.response.news.SimpleNewsDTO;
 import com.narvatov.mnews.model.auth.annotation.AdminAuthorized;
 import com.narvatov.mnews.service.NewsService;
-import lombok.RequiredArgsConstructor;
+import com.narvatov.mnews.utils.AuthUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/news")
 public class NewsController {
 
-    private final NewsService service;
+    @Autowired
+    private NewsService service;
 
 
     //Provide paging
@@ -24,27 +26,20 @@ public class NewsController {
     }
 
     @GetMapping("getByCategory/{category}")
-    public List<News> getByCategory(@PathVariable String category) {
+    public List<SimpleNewsDTO> getByCategory(@PathVariable String category) {
         return service.getByCategory(category);
     }
 
     @GetMapping("get/{id}")
-    public News get(@PathVariable int id) {
+    public DetailedNewsDTO get(@PathVariable int id) {
         return service.get(id);
     }
 
 
     @PostMapping("add")
     @AdminAuthorized
-    public String add(@RequestBody News news) {
-        return service.add(news);
-    }
-
-
-    @PutMapping("update")
-    @AdminAuthorized
-    public String update(@RequestBody News news) {
-        return service.update(news);
+    public String add(@RequestHeader(AuthUtils.AUTH_HEADER) String authHeader, @RequestBody CreateNews createNews) {
+        return service.add(authHeader, createNews);
     }
 
 

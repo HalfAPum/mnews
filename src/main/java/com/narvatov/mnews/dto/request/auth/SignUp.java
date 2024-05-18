@@ -1,4 +1,4 @@
-package com.narvatov.mnews.dto.request;
+package com.narvatov.mnews.dto.request.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

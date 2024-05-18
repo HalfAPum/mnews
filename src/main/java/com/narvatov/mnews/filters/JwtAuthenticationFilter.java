@@ -2,12 +2,11 @@ package com.narvatov.mnews.filters;
 
 import com.narvatov.mnews.service.auth.JwtService;
 import com.narvatov.mnews.service.auth.UserDetailsServiceImpl;
-import io.micrometer.common.util.StringUtils;
+import com.narvatov.mnews.utils.AuthUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,11 +22,12 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -36,14 +35,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         @NotNull HttpServletResponse response,
         @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(AuthUtils.AUTH_HEADER);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        final String jwt = authHeader.substring(7);
+        final String jwt = AuthUtils.getJwt(authHeader);
         log.debug("JWT - {}", jwt);
         final String userEmail = jwtService.extractUserName(jwt);
 

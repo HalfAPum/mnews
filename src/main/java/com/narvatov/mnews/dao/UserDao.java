@@ -12,3 +12,20 @@ public interface UserDao extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
 
 }
+
+//@Repository
+//public class UserDao {
+//
+//    public Optional<User> findByEmail(String email) {
+//        return Optional.of(new User());
+//    }
+//
+//    public void save(User user) {
+//
+//    }
+//
+//    public int count() {
+//        return 1;
+//    }
+//
+//}

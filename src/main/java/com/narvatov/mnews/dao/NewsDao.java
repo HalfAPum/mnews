@@ -1,7 +1,6 @@
 package com.narvatov.mnews.dao;
 
 import com.narvatov.mnews.model.News;
-import com.narvatov.mnews.dto.response.SimpleNewsDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,7 @@ import java.util.List;
 public interface NewsDao extends JpaRepository<News, Integer> {
 
     @Query(value = "SELECT * FROM News ORDER BY creation_date DESC", nativeQuery = true)
-    List<SimpleNewsDTO> findAllNoCommentsSortedByDate();
+    List<News> findAllNoCommentsSortedByDate();
 
     @Query(value = "SELECT * FROM News WHERE category = :category ORDER BY creation_date DESC", nativeQuery = true)
     List<News> findByCategory(String category);

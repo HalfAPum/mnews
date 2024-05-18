@@ -2,6 +2,7 @@ package com.narvatov.mnews.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.narvatov.mnews.model.auth.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,20 +17,27 @@ public class News {
 
     @Id
     @GeneratedValue
-    public int id;
-    public String headline;
+    private int id;
+    private String headline;
     @Column(columnDefinition="TEXT")
-    public String content;
-    //make object?
-    //consider multiple authors
-    public String author;
+    private String content;
+    @OneToOne
+    private User author;
     @JsonProperty("creation_date")
-    public LocalDateTime creationDate;
+    private LocalDateTime creationDate;
     //define enum of categories
-    public String category;
+    private String category;
     @JsonManagedReference
     @OneToMany(mappedBy = "news", fetch = FetchType.LAZY)
-    public List<Comment> comments;
+    private List<Comment> comments;
     //add image
 
+
+    public News(String headline, String content, User author, String category) {
+        this.headline = headline;
+        this.content = content;
+        creationDate = LocalDateTime.now();
+        this.author = author;
+        this.category = category;
+    }
 }

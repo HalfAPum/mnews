@@ -10,21 +10,22 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class SeedDataConfig implements CommandLineRunner {
 
-    private final UserDao userDao;
-    private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserService userService;
 
     @Override
     public void run(String... args) {
-        if (userDao.count() > 2) return;
+        if (userDao.count() > 0) return;
 
         User admin = User.builder()
             .firstName("admin")

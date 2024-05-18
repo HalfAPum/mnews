@@ -1,38 +1,53 @@
 package com.narvatov.mnews.service;
 
 import com.narvatov.mnews.dao.NewsDao;
+import com.narvatov.mnews.dto.request.news.CreateNews;
+import com.narvatov.mnews.dto.response.news.DetailedNewsDTO;
+import com.narvatov.mnews.mapper.MapperKt;
 import com.narvatov.mnews.model.News;
-import com.narvatov.mnews.dto.response.SimpleNewsDTO;
+import com.narvatov.mnews.dto.response.news.SimpleNewsDTO;
+import com.narvatov.mnews.model.auth.User;
+import com.narvatov.mnews.service.auth.JwtService;
+import com.narvatov.mnews.service.auth.UserService;
 import com.narvatov.mnews.utils.ServerResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class NewsService {
 
-    private final NewsDao dao;
+    @Autowired
+    private NewsDao dao;
+    @Autowired
+    private UserService userService;
 
     public List<SimpleNewsDTO> getAll() {
-        return dao.findAllNoCommentsSortedByDate();
+        List<News> news = dao.findAllNoCommentsSortedByDate();
+
+        return MapperKt.mapToSimpleNewsDTO(news);
     }
 
-    public List<News> getByCategory(String category) {
-        return dao.findByCategory(category);
+    public List<SimpleNewsDTO> getByCategory(String category) {
+        List<News> news = dao.findByCategory(category);
+
+        return MapperKt.mapToSimpleNewsDTO(news);
     }
 
-    public News get(int id) {
-        return dao.findById(id).orElse(null);
+    public DetailedNewsDTO get(int id) {
+        News news = dao.findById(id).orElseThrow(() -> new IllegalArgumentException("Id is not present in news table"));
+
+        return new DetailedNewsDTO(news);
     }
 
 
-    public String add(News news) {
-        dao.save(news);
+    public String add(String authHeader, CreateNews createNews) {
+        User admin = userService.extractUserFromAuthHeader(authHeader);
 
-        return ServerResponse.getCreatedMessage(news);
+        dao.save(createNews.getNews(admin));
+
+        return ServerResponse.getCreatedMessage(createNews);
     }
 
 

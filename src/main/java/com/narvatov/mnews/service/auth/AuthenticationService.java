@@ -1,24 +1,27 @@
 package com.narvatov.mnews.service.auth;
 
-import com.narvatov.mnews.dto.request.SignIn;
-import com.narvatov.mnews.dto.request.SignUp;
+import com.narvatov.mnews.dto.request.auth.SignIn;
+import com.narvatov.mnews.dto.request.auth.SignUp;
 import com.narvatov.mnews.dto.response.JwtAuthenticationResponse;
 import com.narvatov.mnews.model.auth.Role;
 import com.narvatov.mnews.model.auth.User;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public JwtAuthenticationResponse signUp(SignUp signUp) {
         User user = User.builder()

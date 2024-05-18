@@ -1,7 +1,7 @@
 package com.narvatov.mnews.config;
 
 import com.narvatov.mnews.filters.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
+import com.narvatov.mnews.service.auth.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,12 +23,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
