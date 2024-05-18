@@ -1,6 +1,6 @@
 package com.narvatov.mnews.model.auth;
 
 public enum Role {
-    USER_ROLE,
-    ADMIN_ROLE,
+    ROLE_ADMIN,
+    ROLE_USER
 }
