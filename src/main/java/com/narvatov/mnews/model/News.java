@@ -27,7 +27,6 @@ public class News {
     private LocalDateTime creationDate;
     //define enum of categories
     private String category;
-    @JsonManagedReference
     @OneToMany(mappedBy = "news", fetch = FetchType.LAZY)
     private List<Comment> comments;
     //add image

@@ -22,7 +22,6 @@ public class Comment {
     private LocalDateTime creationDate;
     @OneToOne
     private User author;
-    @JsonBackReference
     @ManyToOne
     private News news;
 
