@@ -5,7 +5,7 @@ import com.narvatov.mnews.dao.BookmarkedNewsDao;
 import com.narvatov.mnews.dto.response.news.SimpleNewsDTO;
 import com.narvatov.mnews.mapper.MapperKt;
 import com.narvatov.mnews.model.News;
-import com.narvatov.mnews.model.auth.User;
+import com.narvatov.mnews.model.user.User;
 import com.narvatov.mnews.model.bookmark.BookmarkedNews;
 import com.narvatov.mnews.service.auth.UserService;
 import com.narvatov.mnews.utils.ServerResponse;

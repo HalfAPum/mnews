@@ -1,9 +1,8 @@
 package com.narvatov.mnews.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.narvatov.mnews.dto.request.comment.CreateComment;
 import com.narvatov.mnews.dto.request.comment.UpdateComment;
-import com.narvatov.mnews.model.auth.User;
+import com.narvatov.mnews.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

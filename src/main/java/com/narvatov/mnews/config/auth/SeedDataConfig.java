@@ -1,9 +1,8 @@
-package com.narvatov.mnews.config;
+package com.narvatov.mnews.config.auth;
 
 import com.narvatov.mnews.dao.UserDao;
-import com.narvatov.mnews.model.auth.Role;
-import com.narvatov.mnews.model.auth.User;
-import com.narvatov.mnews.service.auth.JwtService;
+import com.narvatov.mnews.model.user.Role;
+import com.narvatov.mnews.model.user.User;
 import com.narvatov.mnews.service.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

@@ -1,0 +1,1 @@
+ALTER TABLE Chat_Message RENAME COLUMN chat_id TO room_id;

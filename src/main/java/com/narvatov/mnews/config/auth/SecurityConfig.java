@@ -1,4 +1,4 @@
-package com.narvatov.mnews.config;
+package com.narvatov.mnews.config.auth;
 
 import com.narvatov.mnews.filters.JwtAuthenticationFilter;
 import com.narvatov.mnews.service.auth.UserDetailsServiceImpl;

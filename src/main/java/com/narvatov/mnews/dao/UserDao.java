@@ -1,6 +1,6 @@
 package com.narvatov.mnews.dao;
 
-import com.narvatov.mnews.model.auth.User;
+import com.narvatov.mnews.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

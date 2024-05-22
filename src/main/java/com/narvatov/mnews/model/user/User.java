@@ -1,4 +1,4 @@
-package com.narvatov.mnews.model.auth;
+package com.narvatov.mnews.model.user;
 
 import io.jsonwebtoken.lang.Collections;
 import jakarta.persistence.*;
@@ -28,6 +28,8 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,8 +1,7 @@
 package com.narvatov.mnews.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.narvatov.mnews.model.auth.User;
+import com.narvatov.mnews.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

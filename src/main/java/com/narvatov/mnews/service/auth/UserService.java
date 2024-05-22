@@ -1,7 +1,7 @@
 package com.narvatov.mnews.service.auth;
 
 import com.narvatov.mnews.dao.UserDao;
-import com.narvatov.mnews.model.auth.User;
+import com.narvatov.mnews.model.user.User;
 import com.narvatov.mnews.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.narvatov.mnews.dto.request.news;
 
 import com.narvatov.mnews.model.News;
-import com.narvatov.mnews.model.auth.User;
+import com.narvatov.mnews.model.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
