@@ -16,6 +16,7 @@ public class ChatRoom {
     private ChatRoomId chatRoomId;
 
     public ChatRoom(int firstUserId, int secondUserId) {
+        id = Math.abs(firstUserId - secondUserId) * firstUserId * secondUserId;
         chatRoomId = new ChatRoomId(firstUserId, secondUserId);
     }
 

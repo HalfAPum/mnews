@@ -1,0 +1,1 @@
+ALTER TABLE Chat_Message ALTER COLUMN content TYPE text;

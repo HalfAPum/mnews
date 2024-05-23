@@ -34,10 +34,16 @@ public class NewsService {
         return MapperKt.mapToSimpleNewsDTO(news);
     }
 
-    public DetailedNewsDTO get(int id) {
+    public DetailedNewsDTO getDetailedNewsById(int id) {
         News news = dao.findById(id).orElseThrow(() -> new IllegalArgumentException("Id is not present in news table"));
 
         return new DetailedNewsDTO(news);
+    }
+
+    public SimpleNewsDTO getSimpleNewsById(int id) {
+        News news = dao.findById(id).orElseThrow(() -> new IllegalArgumentException("Id is not present in news table"));
+
+        return new SimpleNewsDTO(news);
     }
 
 

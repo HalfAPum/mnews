@@ -32,7 +32,7 @@ public class NewsController {
 
     @GetMapping("get/{id}")
     public DetailedNewsDTO get(@PathVariable int id) {
-        return service.get(id);
+        return service.getDetailedNewsById(id);
     }
 
 

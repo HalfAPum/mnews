@@ -4,7 +4,9 @@ const usernamePage = document.querySelector('#username-page');
 const chatPage = document.querySelector('#chat-page');
 const usernameForm = document.querySelector('#usernameForm');
 const messageForm = document.querySelector('#messageForm');
+const messageFormNews = document.querySelector('#messageFormNews');
 const messageInput = document.querySelector('#message');
+const messageInputNews = document.querySelector('#messageNews');
 const connectingElement = document.querySelector('.connecting');
 const chatArea = document.querySelector('#chat-messages');
 const logout = document.querySelector('#logout');
@@ -123,7 +125,7 @@ function displayMessage(senderId, content) {
 }
 
 async function fetchAndDisplayUserChat() {
-    const userChatResponse = await fetch(`/messages/${nickname}/${selectedUserId}`);
+    const userChatResponse = await fetch(`api/v1/chat/messages/${nickname}/${selectedUserId}`);
     const userChat = await userChatResponse.json();
     chatArea.innerHTML = '';
     userChat.forEach(chat => {
@@ -147,9 +149,24 @@ function sendMessage(event) {
             recipientId: selectedUserId,
             content: messageInput.value.trim(),
         };
-        stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/chat/text", {}, JSON.stringify(chatMessage));
         displayMessage(nickname, messageInput.value.trim());
         messageInput.value = '';
+    }
+    chatArea.scrollTop = chatArea.scrollHeight;
+    event.preventDefault();
+}
+
+function sendMessageNews(event) {
+    const messageContent = messageInputNews.value.trim();
+    if (messageContent && stompClient) {
+        const chatMessageNews = {
+            senderId: Number(nickname),
+            receiverId: Number(selectedUserId),
+            newsId: Number(messageInputNews.value.trim()),
+        };
+        stompClient.send("/app/chat/news", {}, JSON.stringify(chatMessageNews));
+        messageInputNews.value = '';
     }
     chatArea.scrollTop = chatArea.scrollHeight;
     event.preventDefault();
@@ -165,6 +182,9 @@ async function onMessageReceived(payload) {
     console.log('selectedUserId === message.senderId', selectedUserId === message.senderId)
     if (selectedUserId && selectedUserId === message.senderId) {
         displayMessage(message.senderId, message.content);
+        chatArea.scrollTop = chatArea.scrollHeight;
+    } else {
+        displayMessage(nickname, message.content);
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
@@ -192,5 +212,6 @@ function onLogout() {
 
 usernameForm.addEventListener('submit', connect, true); // step 1
 messageForm.addEventListener('submit', sendMessage, true);
+messageFormNews.addEventListener('submit', sendMessageNews, true);
 logout.addEventListener('click', onLogout, true);
 window.onbeforeunload = () => onLogout();

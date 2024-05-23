@@ -12,7 +12,7 @@ public class ChatMessageRequest {
     private int receiverId;
     private String content;
 
-    public ChatMessageRequest(ChatMessageRequest1 req) {
+    public ChatMessageRequest(ChatMessageRequestRaw req) {
         senderId = Integer.parseInt(req.getSenderId());
         receiverId = Integer.parseInt(req.getRecipientId());
         content = req.getContent();
