@@ -41,7 +41,7 @@ function onConnected() {
 //        {},
 //        JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
 //    );
-    document.querySelector('#connected-user-fullname').textContent = fullname;
+//    document.querySelector('#connected-user-fullname').textContent = fullname;
 
     messageForm.classList.remove('hidden');
 

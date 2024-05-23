@@ -1,7 +1,6 @@
 package com.narvatov.mnews.service.chat.room;
 
 import com.narvatov.mnews.dao.ChatRoomDao;
-import com.narvatov.mnews.dto.request.chat.ChatMessageRequest;
 import com.narvatov.mnews.model.chat.room.ChatRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +14,14 @@ public class ChatRoomService {
     private ChatRoomDao dao;
 
 
-    public ChatRoom getById(ChatMessageRequest chatMessageRequest) {
-        Optional<ChatRoom> chatRoom = dao.findByTwoUserIds(chatMessageRequest.getSenderId(), chatMessageRequest.getReceiverId());
+    public ChatRoom getByIds(int senderId, int receiverId) {
+        Optional<ChatRoom> chatRoom = dao.findByTwoUserIds(senderId, receiverId);
 
-        return chatRoom.orElseGet(() -> createChatRoom(chatMessageRequest));
+        return chatRoom.orElseGet(() -> createChatRoom(senderId, receiverId));
     }
 
-    private ChatRoom createChatRoom(ChatMessageRequest chatMessageRequest) {
-        ChatRoom createChatRoom = new ChatRoom(chatMessageRequest.getSenderId(), chatMessageRequest.getReceiverId());
+    private ChatRoom createChatRoom(int senderId, int receiverId) {
+        ChatRoom createChatRoom = new ChatRoom(senderId, receiverId);
 
         return dao.save(createChatRoom);
     }

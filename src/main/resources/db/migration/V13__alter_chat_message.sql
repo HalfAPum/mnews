@@ -1,0 +1,1 @@
+ALTER TABLE CHAT_MESSAGE ADD sender_id int;

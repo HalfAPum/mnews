@@ -21,6 +21,8 @@ public class ChatMessage {
     private int id;
     @Column(name = "room_id")
     private int roomId;
+    @Column(name = "sender_id")
+    private int senderId;
     private String content;
     @Column(name = "creation_date")
     private LocalDateTime timestamp;
