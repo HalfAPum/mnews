@@ -15,20 +15,20 @@ let stompClient = null;
 let nickname = null;
 let fullname = null;
 let selectedUserId = null;
+let jwt = null;
 
 function connect(event) {
     nickname = document.querySelector('#nickname').value.trim();
+    jwt = 'Bearer ' + document.querySelector('#jwt').value.trim();
+
     fullname = nickname;
     selectedUserId = document.querySelector('#anotherperson').value.trim();
 
-    if (nickname && fullname) {
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
-
+    if (nickname && fullname && jwt) {
         const socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, onConnected, onError);
+        stompClient.connect({Authorization: jwt}, onConnected, onError);
     }
     event.preventDefault();
 }
@@ -45,6 +45,8 @@ function onConnected() {
 //    );
 //    document.querySelector('#connected-user-fullname').textContent = fullname;
 
+    usernamePage.classList.add('hidden');
+    chatPage.classList.remove('hidden');
     messageForm.classList.remove('hidden');
 
     fetchAndDisplayUserChat().then();
@@ -213,5 +215,7 @@ function onLogout() {
 usernameForm.addEventListener('submit', connect, true); // step 1
 messageForm.addEventListener('submit', sendMessage, true);
 messageFormNews.addEventListener('submit', sendMessageNews, true);
-logout.addEventListener('click', onLogout, true);
 window.onbeforeunload = () => onLogout();
+
+//Current jwt (admin)
+//eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTY1NTI2MTQsImV4cCI6MTcxNjU4ODYxNH0.Yum9RpOhq1iqAH3YQ3dmFZkU9Zk2c61SIir9UXCtsVQ
