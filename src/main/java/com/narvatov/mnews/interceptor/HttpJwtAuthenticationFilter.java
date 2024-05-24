@@ -1,4 +1,4 @@
-package com.narvatov.mnews.filters;
+package com.narvatov.mnews.interceptor;
 
 import com.narvatov.mnews.service.auth.JwtService;
 import com.narvatov.mnews.service.auth.UserDetailsServiceImpl;
@@ -22,7 +22,7 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class HttpJwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtService jwtService;

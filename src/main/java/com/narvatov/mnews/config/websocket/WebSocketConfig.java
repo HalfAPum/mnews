@@ -1,27 +1,15 @@
 package com.narvatov.mnews.config.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.narvatov.mnews.service.auth.JwtService;
-import com.narvatov.mnews.service.auth.UserDetailsServiceImpl;
-import com.narvatov.mnews.utils.AuthUtils;
+import com.narvatov.mnews.interceptor.TcpJwtAuthenticationInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.converter.DefaultContentTypeResolver;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.messaging.simp.stomp.StompCommand;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.ChannelInterceptor;
-import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -36,9 +24,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private TcpJwtAuthenticationInterceptor jwtAuthenticationInterceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -69,33 +55,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new ChannelInterceptor() {
-            @Override
-            public Message<?> preSend(@NotNull Message<?> message, @NotNull MessageChannel channel) {
-                StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-                assert accessor != null;
-
-                if (!StompCommand.CONNECT.equals(accessor.getCommand())) return message;
-
-                String authHeader = accessor.getFirstNativeHeader(AuthUtils.AUTH_HEADER);
-
-                assert authHeader != null;
-                String jwt = AuthUtils.getJwt(authHeader);
-
-                final String userEmail = jwtService.extractUserName(jwt);
-
-                UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-
-                assert jwtService.isTokenValid(jwt, userDetails);
-                log.debug("User - {}", userDetails);
-
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                accessor.setUser(authToken);
-
-                return message;
-            }
-        });
+        registration.interceptors(jwtAuthenticationInterceptor);
     }
+
 }

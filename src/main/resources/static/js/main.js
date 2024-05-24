@@ -219,3 +219,6 @@ window.onbeforeunload = () => onLogout();
 
 //Current jwt (admin)
 //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTY1NTI2MTQsImV4cCI6MTcxNjU4ODYxNH0.Yum9RpOhq1iqAH3YQ3dmFZkU9Zk2c61SIir9UXCtsVQ
+
+//Current jwt (user)
+//eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTb21lbWFpbDFAZ21haWwuY29tIiwiaWF0IjoxNzE2NTUzNTA5LCJleHAiOjE3MTY1ODk1MDl9.DWrb3yxB1aSeP9t-uE7RJNI1xCHj0iihpqEtDFGmrKs
