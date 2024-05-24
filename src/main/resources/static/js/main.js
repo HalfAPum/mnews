@@ -9,7 +9,6 @@ const messageInput = document.querySelector('#message');
 const messageInputNews = document.querySelector('#messageNews');
 const connectingElement = document.querySelector('.connecting');
 const chatArea = document.querySelector('#chat-messages');
-const logout = document.querySelector('#logout');
 
 let stompClient = null;
 let nickname = null;
@@ -18,18 +17,28 @@ let selectedUserId = null;
 let jwt = null;
 
 function connect(event) {
-    nickname = document.querySelector('#nickname').value.trim();
     jwt = 'Bearer ' + document.querySelector('#jwt').value.trim();
 
-    fullname = nickname;
-    selectedUserId = document.querySelector('#anotherperson').value.trim();
+    fetch(`api/v1/chat/getUserId`,{
+        headers: {
+             'Authorization': jwt,
+        }
+    }).then(response => response.json()).then(res => {
+        nickname = '' + res;
 
-    if (nickname && fullname && jwt) {
-        const socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
+        console.log("User id from jwt " + nickname);
 
-        stompClient.connect({Authorization: jwt}, onConnected, onError);
-    }
+        fullname = nickname;
+        selectedUserId = document.querySelector('#anotherperson').value.trim();
+
+        if (nickname && fullname && jwt) {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({Authorization: jwt}, onConnected, onError);
+        }
+    });
+
     event.preventDefault();
 }
 
@@ -50,67 +59,7 @@ function onConnected() {
     messageForm.classList.remove('hidden');
 
     fetchAndDisplayUserChat().then();
-//    findAndDisplayConnectedUsers().then();
 }
-
-//async function findAndDisplayConnectedUsers() {
-//    const connectedUsersResponse = await fetch('/users');
-//    let connectedUsers = await connectedUsersResponse.json();
-//    connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
-//    const connectedUsersList = document.getElementById('connectedUsers');
-//    connectedUsersList.innerHTML = '';
-//
-//    connectedUsers.forEach(user => {
-//        appendUserElement(user, connectedUsersList);
-//        if (connectedUsers.indexOf(user) < connectedUsers.length - 1) {
-//            const separator = document.createElement('li');
-//            separator.classList.add('separator');
-//            connectedUsersList.appendChild(separator);
-//        }
-//    });
-//}
-
-//function appendUserElement(user, connectedUsersList) {
-//    const listItem = document.createElement('li');
-//    listItem.classList.add('user-item');
-//    listItem.id = user.nickName;
-//
-//    const userImage = document.createElement('img');
-//    userImage.src = '../img/user_icon.png';
-//    userImage.alt = user.fullName;
-//
-//    const usernameSpan = document.createElement('span');
-//    usernameSpan.textContent = user.fullName;
-//
-//    const receivedMsgs = document.createElement('span');
-//    receivedMsgs.textContent = '0';
-//    receivedMsgs.classList.add('nbr-msg', 'hidden');
-//
-//    listItem.appendChild(userImage);
-//    listItem.appendChild(usernameSpan);
-//    listItem.appendChild(receivedMsgs);
-//
-//    listItem.addEventListener('click', userItemClick);
-//
-//    connectedUsersList.appendChild(listItem);
-//}
-
-//function userItemClick(event) {
-//    document.querySelectorAll('.user-item').forEach(item => {
-//        item.classList.remove('active');
-//    });
-//
-//    const clickedUser = event.currentTarget;
-//    clickedUser.classList.add('active');
-//
-//    selectedUserId = clickedUser.getAttribute('id');
-//    fetchAndDisplayUserChat().then();
-//
-//    const nbrMsg = clickedUser.querySelector('.nbr-msg');
-//    nbrMsg.classList.add('hidden');
-//    nbrMsg.textContent = '0';
-//
-//}
 
 function displayMessage(senderId, content) {
     const messageContainer = document.createElement('div');
@@ -127,7 +76,11 @@ function displayMessage(senderId, content) {
 }
 
 async function fetchAndDisplayUserChat() {
-    const userChatResponse = await fetch(`api/v1/chat/messages/${nickname}/${selectedUserId}`);
+    const userChatResponse = await fetch(`api/v1/chat/messages/${selectedUserId}`,{
+         headers: {
+              'Authorization': jwt,
+         }
+     });
     const userChat = await userChatResponse.json();
     chatArea.innerHTML = '';
     userChat.forEach(chat => {
@@ -147,8 +100,7 @@ function sendMessage(event) {
     const messageContent = messageInput.value.trim();
     if (messageContent && stompClient) {
         const chatMessage = {
-            senderId: nickname,
-            recipientId: selectedUserId,
+            recipientId: Number(selectedUserId),
             content: messageInput.value.trim(),
         };
         stompClient.send("/app/chat/text", {}, JSON.stringify(chatMessage));
@@ -163,7 +115,6 @@ function sendMessageNews(event) {
     const messageContent = messageInputNews.value.trim();
     if (messageContent && stompClient) {
         const chatMessageNews = {
-            senderId: Number(nickname),
             receiverId: Number(selectedUserId),
             newsId: Number(messageInputNews.value.trim()),
         };
@@ -190,12 +141,6 @@ async function onMessageReceived(payload) {
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-//    if (selectedUserId) {
-//        document.querySelector(`#${selectedUserId}`).classList.add('active');
-//    } else {
-//        messageForm.classList.add('hidden');
-//    }
-
     const notifiedUser = document.querySelector(`#${message.senderId}`);
     if (notifiedUser && !notifiedUser.classList.contains('active')) {
         const nbrMsg = notifiedUser.querySelector('.nbr-msg');
@@ -204,21 +149,6 @@ async function onMessageReceived(payload) {
     }
 }
 
-function onLogout() {
-//    stompClient.send("/app/user.disconnectUser",
-//        {},
-//        JSON.stringify({nickName: nickname, fullName: fullname, status: 'OFFLINE'})
-//    );
-    window.location.reload();
-}
-
 usernameForm.addEventListener('submit', connect, true); // step 1
 messageForm.addEventListener('submit', sendMessage, true);
 messageFormNews.addEventListener('submit', sendMessageNews, true);
-window.onbeforeunload = () => onLogout();
-
-//Current jwt (admin)
-//eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTY1NTI2MTQsImV4cCI6MTcxNjU4ODYxNH0.Yum9RpOhq1iqAH3YQ3dmFZkU9Zk2c61SIir9UXCtsVQ
-
-//Current jwt (user)
-//eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTb21lbWFpbDFAZ21haWwuY29tIiwiaWF0IjoxNzE2NTUzNTA5LCJleHAiOjE3MTY1ODk1MDl9.DWrb3yxB1aSeP9t-uE7RJNI1xCHj0iihpqEtDFGmrKs

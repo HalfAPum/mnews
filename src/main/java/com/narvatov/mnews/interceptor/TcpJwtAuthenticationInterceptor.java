@@ -1,7 +1,9 @@
 package com.narvatov.mnews.interceptor;
 
+import com.narvatov.mnews.model.user.User;
 import com.narvatov.mnews.service.auth.JwtService;
 import com.narvatov.mnews.service.auth.UserDetailsServiceImpl;
+import com.narvatov.mnews.service.auth.WebSocketSessionService;
 import com.narvatov.mnews.utils.AuthUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +27,8 @@ public class TcpJwtAuthenticationInterceptor implements ChannelInterceptor {
     private JwtService jwtService;
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private WebSocketSessionService webSocketSessionService;
 
     @Override
     public Message<?> preSend(@NotNull Message<?> message, @NotNull MessageChannel channel) {
@@ -40,7 +44,7 @@ public class TcpJwtAuthenticationInterceptor implements ChannelInterceptor {
 
         final String userEmail = jwtService.extractUserName(jwt);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+        User userDetails = (User) userDetailsService.loadUserByUsername(userEmail);
 
         assert jwtService.isTokenValid(jwt, userDetails);
         log.debug("User - {}", userDetails);
@@ -49,6 +53,8 @@ public class TcpJwtAuthenticationInterceptor implements ChannelInterceptor {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         accessor.setUser(authToken);
+
+        webSocketSessionService.saveSession(accessor.getSessionId(), userDetails);
 
         return message;
     }

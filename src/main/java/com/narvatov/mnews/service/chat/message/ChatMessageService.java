@@ -29,14 +29,14 @@ public class ChatMessageService {
     @Autowired
     private NewsService newsService;
 
-    public ChatMessage save(ChatMessageRequest chatMessageRequest) {
-        ChatRoom chatRoom = chatRoomService.getByIds(chatMessageRequest.getSenderId(), chatMessageRequest.getReceiverId());
+    public ChatMessage save(int senderId, ChatMessageRequest chatMessageRequest) {
+        ChatRoom chatRoom = chatRoomService.getByIds(senderId, chatMessageRequest.getReceiverId());
 
-        return save(chatRoom.getId(), chatMessageRequest.getSenderId(), chatMessageRequest.getContent());
+        return save(chatRoom.getId(), senderId, chatMessageRequest.getContent());
     }
 
-    public ChatMessage save(ChatMessageNewsRequest chatMessageNewsRequest) throws JsonProcessingException {
-        ChatRoom chatRoom = chatRoomService.getByIds(chatMessageNewsRequest.getSenderId(), chatMessageNewsRequest.getReceiverId());
+    public ChatMessage save(int senderId, ChatMessageNewsRequest chatMessageNewsRequest) throws JsonProcessingException {
+        ChatRoom chatRoom = chatRoomService.getByIds(senderId, chatMessageNewsRequest.getReceiverId());
 
         SimpleNewsDTO news = newsService.getSimpleNewsById(chatMessageNewsRequest.getNewsId());
 
@@ -46,7 +46,7 @@ public class ChatMessageService {
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String newsJson = ow.writeValueAsString(news);
 
-        return save(chatRoom.getId(), chatMessageNewsRequest.getSenderId(), newsJson);
+        return save(chatRoom.getId(), senderId, newsJson);
     }
 
     private ChatMessage save(int chatId, int senderId, String content) {
