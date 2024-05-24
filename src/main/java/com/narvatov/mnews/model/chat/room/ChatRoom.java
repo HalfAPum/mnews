@@ -7,17 +7,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Chat_Room")
+@Table(name = "Chat_Room", uniqueConstraints = @UniqueConstraint(columnNames={"first_user_id", "second_user_id"}))
 public class ChatRoom {
 
-    @Column(unique = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @EmbeddedId
-    private ChatRoomId chatRoomId;
+    @Column(name = "first_user_id")
+    private int firstUserId;
+    @Column(name = "second_user_id")
+    private int secondUserId;
 
     public ChatRoom(int firstUserId, int secondUserId) {
-        id = Math.abs(firstUserId - secondUserId) * firstUserId * secondUserId;
-        chatRoomId = new ChatRoomId(firstUserId, secondUserId);
+        this.firstUserId = firstUserId;
+        this.secondUserId = secondUserId;
     }
 
 }

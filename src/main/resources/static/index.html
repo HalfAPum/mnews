@@ -8,16 +8,26 @@
 </head>
 <body>
 
+Current jwt (admin "5") <br>
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTY1NTI2MTQsImV4cCI6MTcxNjU4ODYxNH0.Yum9RpOhq1iqAH3YQ3dmFZkU9Zk2c61SIir9UXCtsVQ
+<br><br>
+Current jwt (user "4")<br>
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTb21lbWFpbDFAZ21haWwuY29tIiwiaWF0IjoxNzE2NTUzNTA5LCJleHAiOjE3MTY1ODk1MDl9.DWrb3yxB1aSeP9t-uE7RJNI1xCHj0iihpqEtDFGmrKs
+<br><br>
+Current jwt (user "1")<br>
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTb21lbWFpbEBnbWFpbC5jb20iLCJpYXQiOjE3MTY1NTc2MjMsImV4cCI6MTcxNjU5MzYyM30.dAU_-YKIXN2NNjoIDkIheVQTYOyZVdsv8g1w_lM-WKs
+<br><br>
+
 <h2>One to one chat</h2>
 
 <div class="user-form" id="username-page">
     <h2>Enter Chatroom</h2>
     <form id="usernameForm">
-        <label for="anotherperson">Another person id:</label>
-        <input type="text" id="anotherperson" name="realname" required>
-
         <label for="jwt">JWT:</label>
         <input type="text" id="jwt" name="realname" required>
+
+        <label for="anotherperson">Another person id:</label>
+        <input type="text" id="anotherperson" name="realname" required>
 
         <button type="submit">Enter Chatroom</button>
     </form>
