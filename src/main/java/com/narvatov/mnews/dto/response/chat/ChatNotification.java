@@ -2,8 +2,10 @@ package com.narvatov.mnews.dto.response.chat;
 
 import com.narvatov.mnews.model.chat.message.ChatMessage;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ChatNotification {
 
     private String id;

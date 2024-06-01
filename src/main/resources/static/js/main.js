@@ -1,6 +1,7 @@
 'use strict';
 
 const usernamePage = document.querySelector('#username-page');
+const jwtList = document.querySelector('#jwt-list');
 const chatPage = document.querySelector('#chat-page');
 const usernameForm = document.querySelector('#usernameForm');
 const messageForm = document.querySelector('#messageForm');
@@ -55,6 +56,7 @@ function onConnected() {
 //    document.querySelector('#connected-user-fullname').textContent = fullname;
 
     usernamePage.classList.add('hidden');
+    jwtList.classList.add('hidden');
     chatPage.classList.remove('hidden');
     messageForm.classList.remove('hidden');
 

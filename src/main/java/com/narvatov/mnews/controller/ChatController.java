@@ -38,7 +38,7 @@ public class ChatController {
 
     @MessageMapping("chat/text")
     public void processMessage(SimpMessageHeaderAccessor headerAccessor, @Payload ChatMessageRequest chatMessageRequest) {
-        int userId = webSocketSessionService.getUserId(headerAccessor);
+        int userId = webSocketSessionService.getUserId(headerAccessor.getSessionId());
 
         ChatMessage chatMessage = service.save(userId, chatMessageRequest);
 
@@ -50,7 +50,7 @@ public class ChatController {
 
     @MessageMapping("chat/news")
     public void processMessage(SimpMessageHeaderAccessor headerAccessor, @Payload ChatMessageNewsRequest chatMessageNewsRequest) throws JsonProcessingException {
-        int userId = webSocketSessionService.getUserId(headerAccessor);
+        int userId = webSocketSessionService.getUserId(headerAccessor.getSessionId());
 
         ChatMessage chatMessage = service.save(userId, chatMessageNewsRequest);
 
